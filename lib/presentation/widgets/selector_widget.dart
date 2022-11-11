@@ -68,6 +68,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           ),
         ),
         DirectSelect(
+          mode: DirectSelectMode.tap,
           itemExtent: 45.0,
           selectedIndex: selectedIndex1,
           backgroundColor:
@@ -115,6 +116,7 @@ class _SelectorWidgetState extends State<SelectorWidget> {
           ),
         ),
         DirectSelect(
+          mode: DirectSelectMode.tap,
           itemExtent: 45.0,
           selectedIndex: selectedIndex1,
           backgroundColor:

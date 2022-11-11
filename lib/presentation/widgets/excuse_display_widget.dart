@@ -6,6 +6,7 @@ import 'package:find_an_excuse/presentation/themes/theme_color.dart';
 import 'package:find_an_excuse/presentation/widgets/app_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ExcuseDisplayWidget extends StatefulWidget {
@@ -41,48 +42,54 @@ class _ExcuseDisplayWidgetState extends State<ExcuseDisplayWidget> {
     }
 
     return controller.obx(
-        (status) => GridView.builder(
-              scrollDirection: Axis.horizontal,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 800,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 1.5,
-                  mainAxisSpacing: 1.5),
-              itemCount: controller.excuse.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      color: Get.isDarkMode ? AppColor.blush : AppColor.blush,
-                      elevation: 20,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10.0),
-                      child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: GestureDetector(
-                            onLongPress: () {
-                              Clipboard.setData(ClipboardData(
-                                text: controller.excuse.isNotEmpty
-                                    ? controller.excuse[index].excuse!
-                                    : '',
-                              ));
-                              Get.snackbar('Copied', 'Copied to Clipboard',
-                                  snackPosition: SnackPosition.BOTTOM);
-                            },
-                            child: Text(
-                              controller.excuse.isNotEmpty
-                                  ? controller.excuse[index].excuse!
-                                  : '',
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                              style: Theme.of(context).textTheme.headline6,
-                            ),
-                          )),
-                    ),
-                  ),
-                );
-              },
+        (status) => Center(
+              child: SizedBox(
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().screenHeight,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: controller.excuse.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Card(
+                        color: Get.isDarkMode ? AppColor.blush : AppColor.blush,
+                        elevation: 20,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10.0),
+                        child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: GestureDetector(
+                              onLongPress: () {
+                                Clipboard.setData(ClipboardData(
+                                  text: controller.excuse.isNotEmpty
+                                      ? controller.excuse[index].excuse!
+                                      : '',
+                                ));
+                                Get.snackbar('Copied', 'Copied to Clipboard',
+                                    snackPosition: SnackPosition.BOTTOM);
+                              },
+                              child: SizedBox(
+                                width: ScreenUtil().screenWidth * 0.5,
+                                height: ScreenUtil().screenHeight * 0.25,
+                                child: Center(
+                                  child: Text(
+                                    controller.excuse.isNotEmpty
+                                        ? controller.excuse[index].excuse!
+                                        : '',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.fade,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                ),
+                              ),
+                            )),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
         onError: (error) => AppErrorWidget(
             errorType: AppErrorType.api,
